@@ -1,28 +1,43 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <div>
+      <span>post code:</span>
+      <input type="text" v-model="postCode">
+    </div>
+    <div>
+      <span>address:</span>
+      <button @click="sarchAddress">住所検索</button>
+      <span>{{address}}</span>
+    </div>
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import axios from 'axios';
 
 export default {
-  name: 'App',
-  components: {
-    HelloWorld
-  }
+  data() {
+    return {
+      postCode: "",
+      address: "",
+    };
+  },
+  methods: {
+    async sarchAddress() {
+      const addressData = await axios.get(`https://apis.postcode-jp.com/api/v3/postcodes/${this.postCode}?apiKey=sZUYVEO3ikDRfy4lihL95FXIZoS46dFsleGo5BA`);
+      this.address = addressData.data.allAddress;
+    },
+  },
 }
 </script>
 
 <style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
+  #app div {
+    margin: 15px;
+  }
+
+  input,
+  button {
+    margin: 0 10px;
+  }
 </style>
